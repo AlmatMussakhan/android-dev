@@ -1,0 +1,132 @@
+bool isLeapYear(int year) {
+  if (year % 400 == 0) return true;
+  if (year % 100 == 0) return false;
+  return year % 4 == 0;
+}
+
+String getNextDay(String dateStr) {
+  List<String> parts = dateStr.split('.');
+  int day = int.parse(parts[0]);
+  int month = int.parse(parts[1]);
+  int year = int.parse(parts[2]);
+
+  List<int> daysInMonths = [
+    31,
+    isLeapYear(year) ? 29 : 28,
+    31,
+    30,
+    31,
+    30,
+    31,
+    31,
+    30,
+    31,
+    30,
+    31
+  ];
+
+  if (month < 1 || month > 12) return 'Invalid date';
+  if (day < 1 || day > daysInMonths[month - 1]) return 'Invalid date';
+
+  day++;
+
+  if (day > daysInMonths[month - 1]) {
+    day = 1;
+    month++;
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+  }
+
+  return '${day.toString().padLeft(2, '0')}.${month.toString().padLeft(2, '0')}.$year';
+}
+
+int countVowels(String text) {
+  String vowels = 'aeiouAEIOU';
+  int count = 0;
+  for (int i = 0; i < text.length; i++) {
+    if (vowels.contains(text[i])) {
+      count++;
+    }
+  }
+  return count;
+}
+
+Map<String, int> findMinMax(List<int> nums) {
+  int minVal = nums[0];
+  int maxVal = nums[0];
+  for (int i = 1; i < nums.length; i++) {
+    if (nums[i] < minVal) minVal = nums[i];
+    if (nums[i] > maxVal) maxVal = nums[i];
+  }
+  return {'min': minVal, 'max': maxVal};
+}
+
+bool isPrime(int n) {
+  if (n <= 1) return false;
+  for (int i = 2; i <= n ~/ 2; i++) {
+    if (n % i == 0) return false;
+  }
+  return true;
+}
+
+void main() {
+  String name = 'Bekzat';
+  int age = 18;
+  double gpa = 3.8;
+  bool isStudent = true;
+  print('Name: $name\nAge: $age y.o.\nGPA: $gpa\nIs Student: $isStudent');
+  String text1 = 'Hello';
+  String? text2 = null;
+  print('text1: $text1');
+  print('text2: $text2');
+  int length1 = text1.length;
+  int length2 = text2?.length ?? 0;
+  print('Length 1: $length1');
+  print('Length 2: $length2');
+  String confirmedText = text2 ?? 'default';
+  print('Confirmed $confirmedText length: ${confirmedText.length}');
+
+  int digit = 3;
+  print('\n--- TASK 1 ---');
+  for (int d = 1; d <= 10; d++) {
+    print('Table for $d:');
+    for (int i = 1; i <= 10; i++) {
+      print('$d * $i = ${i * d}');
+    }
+    print('');
+  }
+
+  print('--- TASK 2 ---');
+  List<String> testDates = [
+    '05.09.2026',
+    '28.02.2024',
+    '28.02.2026',
+    '29.02.2026',
+    '28.02.2100',
+    '31.12.2025'
+  ];
+  for (var date in testDates) {
+    print('$date -> ${getNextDay(date)}');
+  }
+  print('\n--- TASK 3 ---');
+  String sampleText = 'flutter mobile development';
+  print('Text: "$sampleText" -> Vowels: ${countVowels(sampleText)}');
+
+  print('\n--- TASK 4---');
+  List<int> numbers = [14, 88, 3, 42, 99, 12, 67];
+  List<int> numbers1 = [234, 34, 123, 44, 949, 112, 67];
+  
+  var res1 = findMinMax(numbers);
+  var res2 = findMinMax(numbers1);
+  print('Numbers: $numbers -> min: ${res1['min']}, max: ${res1['max']}');
+  print('Numbers1: $numbers1 -> min: ${res2['min']}, max: ${res2['max']}');
+
+  print('\n--- TASK 5---');
+  List<int> testPrimes = [3, 6, 11, 1, 17, 20];
+  for (var num in testPrimes) {
+    String status = isPrime(num) ? 'prime number' : 'not prime number';
+    print('$num -> $status');
+  }
+}
